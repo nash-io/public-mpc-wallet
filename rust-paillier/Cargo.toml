@@ -1,0 +1,48 @@
+[package]
+name = "paillier"
+version = "1.0.1"
+edition = "2018"
+
+[features]
+rust_gmp = ["bigints/rust-gmp"]
+num_bigint = ["bigints/num_bigint", "num-traits", "num-integer"]
+
+[dependencies]
+rayon = "1.1"
+serde = { version = "1.0", features = ["derive"] }
+num-traits = { version = "0.2", optional = true }
+num-integer = { version = "0.1", optional = true }
+
+[dependencies.bigints]
+version = "*"
+path = "../bigints"
+default-features = false
+
+[dev-dependencies]
+bencher = "0.1"
+serde_json = "1.0"
+
+[[bench]]
+name = "arith"
+harness = false
+
+[[bench]]
+name = "encryption"
+harness = false
+
+[[bench]]
+name = "keygen"
+harness = false
+
+[[bench]]
+name = "proof"
+harness = false
+
+[[example]]
+name = "basic"
+
+[[example]]
+name = "core"
+
+[[example]]
+name = "packed"

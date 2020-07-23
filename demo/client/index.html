@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MPC API key demo</title>
+    <style>
+      .data{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: .8em;
+      }
+      input{
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
+    <script src="./bootstrap.js"></script>
+    <h1>MPC API childkey demo</h1>
+    Secret key: <input type="text" id="secret_key" size=64 value="4794853ce9e44b4c7a69c6a3b87db077f8f910f244bb6b966ba5fed83c9756f1"></input>
+    <br/>
+    <br/>
+    <input type="radio" name="curve" value="Secp256k1" id="Secp256k1" checked/><label for="Secp256k1">secp256k1 (BTC, ETH, ..)</label><br/>
+    <input type="radio" name="curve" value="Secp256r1" id="Secp256r1"/><label for="Secp256r1">secp256r1 (NEO, ..)</label><br/>
+    <button id="create_api_childkey">Create API childkey</button>
+    <br/>
+    <h3>API childkey:</h3>
+    <div id="api_childkey" class="data"></div>
+    <br/>
+    <button id="sig">Compute signature</button><br/>
+    on message hash:
+    <input type="text" id="message_hash" size=64 value="000000000000000fffffffffffffffffff00000000000000ffffffffff000000"></input>
+    <br/>
+    <h3>Presignature</h3>
+    <div id="presig" class="data"></div>
+    <h3>Signature</h3>
+    <div id="signature" class="data"></div>
+  </body>
+</html>

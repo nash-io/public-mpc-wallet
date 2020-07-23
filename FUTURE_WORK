@@ -1,0 +1,7 @@
+
+-) Add support for rug to bigints and replace the unmaintained rust-gmp therewith.
+
+-) Find some maintained Paillier library for Rust and replace rust-paillier therewith.
+
+-) Consider replacing secp256k1 with https://github.com/RustCrypto/elliptic-curves/tree/master/k256 (-> pure Rust) and amcl with https://github.com/RustCrypto/elliptic-curves/tree/master/p256 (-> potentially smaller WASM binary) as soon as those libraries are ready.
+

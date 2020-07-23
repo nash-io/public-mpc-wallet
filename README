@@ -1,0 +1,17 @@
+
+Nash's MPC-based API keys
+
+
+mpc-wallet-lib: Rust library for MPC-based API keys. Compiles with stable Rust (i.e., 1.39 as of 11/2019)
+
+mpc-wallet-wasm: WASM (full) client interface to MPC-based API keys
+
+mpc-wallet-elixir: Elixir server and client NIFs to MPC-based API keys
+
+mpc-wallet-nodejs: Node.js (limited) client interface to MPC-based API keys
+
+bigints: library for supporting multiple bigint libraries
+
+rust-paillier: patched pure Rust Paillier library
+
+demo: client and server demos using the WASM and Elixir interfaces respectively

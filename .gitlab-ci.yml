@@ -1,0 +1,90 @@
+image: 'fedora:30'
+
+stages:
+  - test
+
+.rust-template: &rust-template
+  before_script:
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - export PATH=$PATH:$HOME/.cargo/bin
+    - rustc --version && cargo --version
+    - dnf install -y gcc gmp-devel erlang-erts openssl-devel clang glibc-headers glibc-devel.i686 npm
+    - cargo install wasm-pack
+    - npm install --global neon-cli
+    - neon version
+    - dnf install -y git cmake make
+    - git clone https://github.com/WebAssembly/binaryen.git
+    - cd binaryen
+    - cmake CMakelists.txt
+    - make install
+    - cd ..
+    - echo '/usr/local/lib64/' | sudo tee -a /etc/ld.so.conf.d/local.conf
+    - ldconfig
+
+test-mpc-wallet-wasm:
+  <<: *rust-template
+  stage: test
+  script:
+    - cd mpc-wallet-wasm
+    - cargo build --release
+    - cargo build --features rust_gmp --no-default-features --release
+    - cargo build --features num_bigint --no-default-features --release
+    - cargo test --release
+    - cargo test --no-default-features --features rust_gmp --release
+    - cargo test --no-default-features --features num_bigint --release
+    - wasm-pack build --release --target bundler
+    - wasm-opt -Os pkg/mpc_wallet_wasm_bg.wasm -o pkg/mpc_wallet_wasm_bg.wasm
+    - wasm-pack build --release --target nodejs
+    - wasm-opt -Os pkg/mpc_wallet_wasm_bg.wasm -o pkg/mpc_wallet_wasm_bg.wasm
+
+test-bigints:
+  <<: *rust-template
+  stage: test
+  script:
+    - cd bigints
+    - cargo build --release
+    - cargo test --release
+    - cargo build --no-default-features --features num_bigint --release
+    - cargo test --no-default-features --features num_bigint --release
+    - cargo build --no-default-features --features rust-gmp --release
+    - cargo test --no-default-features --features rust-gmp --release
+
+test-mpc-wallet-lib:
+  <<: *rust-template
+  stage: test
+  script:
+    - cd mpc-wallet-lib
+    - cargo build --no-default-features --features rust_gmp --release
+    - cargo test --no-default-features --features rust_gmp --release
+    - cargo build --no-default-features --features num_bigint --release
+    - cargo test --no-default-features --features num_bigint --release
+
+test-mpc-wallet-elixir:
+  <<: *rust-template
+  stage: test
+  script:
+    - cd mpc-wallet-elixir
+    - cargo build --release
+    - cargo build --no-default-features --features rust_gmp --release
+    - cargo build --no-default-features --features num_bigint --release
+
+test-rust-paillier:
+  <<: *rust-template
+  stage: test
+  script:
+    - cd rust-paillier
+    - cargo build --no-default-features --features rust_gmp --release
+    - cargo test --no-default-features --features rust_gmp --release
+    - cargo build --no-default-features --features num_bigint --release
+    - cargo test --no-default-features --features num_bigint --release
+
+test-mpc-wallet-nodejs:
+  <<: *rust-template
+  stage: test
+  script:
+    - cd mpc-wallet-nodejs
+    - neon build --release
+    - strip native/index.node
+    - cd native
+    - cargo build --release
+    - cargo test --release

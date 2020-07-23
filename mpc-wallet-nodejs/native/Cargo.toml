@@ -1,0 +1,22 @@
+[package]
+name = "mpc-wallet-nodejs"
+version = "1.1.2"
+build = "build.rs"
+edition = "2018"
+
+[lib]
+name = "mpc_wallet_nodejs"
+crate-type = ["cdylib"]
+
+[build-dependencies]
+neon-build = "0.4"
+
+[dependencies]
+neon = "0.4"
+neon-serde = "0.4"
+mpc-wallet-lib = { version = "*", path = '../../mpc-wallet-lib', features = ["rust_gmp"] }
+serde_json = "1.0"
+
+[profile.release]
+# optimize for speed rather than for binary size
+opt-level = 3
