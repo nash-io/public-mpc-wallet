@@ -9,11 +9,10 @@ name = "mpc_wallet_nodejs"
 crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.4"
+neon-build = "0.5.2"
 
 [dependencies]
-neon = "0.4"
-neon-serde = "0.4"
+neon = "0.5.2"
 mpc-wallet-lib = { version = "*", path = '../../mpc-wallet-lib', features = ["num_bigint"] }
 serde_json = "1.0"
 
